@@ -1,0 +1,117 @@
+$blueViolet: rgb(87, 102, 236);
+$lightBlue: rgb(231, 239, 255);
+$hoverBluViolet: rgb(112, 126, 249);
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.planParkovki {
+  background-color: $lightBlue;
+  width: 100%;
+  max-width: 1920px;
+  padding: 15px 20px 60px 15px;
+
+  .wrapperWidgetPlanParking1 {
+    display: grid;
+    width: 75vw;
+    margin: 0 auto;
+    border: 2px solid $blueViolet;
+    border-radius: 6px;
+    grid-template-columns: repeat(5, 150px);
+    grid-template-rows: repeat(2, 250px);
+    grid-gap: 125px 50px;
+    padding: 30px 25px 25px 25px;
+    justify-content: center;
+    background-color: white;
+
+    .wrap__cars {
+      display: grid;
+      position: relative;
+    }
+
+    .cars {
+      position: relative;
+      border: 1px solid $hoverBluViolet;
+      border-radius: 4px;
+      background: url('../../assets/planCars1.jpg') no-repeat center center / cover;
+      transform: rotate(-30deg);
+      padding: 15px 30px 0 30px;
+
+      &:hover {
+        border: 2px solid $hoverBluViolet;
+      }
+    }
+
+    .carsRotate {
+      transform: rotate(180deg);
+    }
+    
+    .carsRotate1 {
+      transform: rotate(-30deg);
+    }
+    
+    .carsRotate2 {
+      transform: rotate(-150deg);
+    }
+    
+    .nameParkingRotate {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+  }
+
+  // WidgetPlanParking2 start
+  .wrapperWidgetPlanParking2 {
+    display: grid;
+    width: 75vw;
+    margin: 0 auto;
+    border: 2px solid $blueViolet;
+    border-radius: 6px;
+    grid-template-columns: repeat(5, 150px);
+    grid-template-rows: repeat(2, 250px);
+    grid-gap: 125px 50px;
+    padding: 30px 25px 35px 25px;
+    justify-content: center;
+    background-color: white;
+
+    .wrap__cars {
+      display: grid;
+      position: relative;
+    }
+
+    .cars {
+      position: relative;
+      border: 1px solid $hoverBluViolet;
+      border-radius: 4px;
+      background: url('../../assets/planCars1.jpg') no-repeat center center / cover;
+      transform: rotate(-30deg);
+      padding: 15px 30px 0 30px;
+
+      &:hover {
+        border: 2px solid $hoverBluViolet;
+      }
+    }
+
+    .carsRotate {
+      transform: rotate(180deg);
+    }
+    
+    .carsRotate1 {
+      transform: rotate(-30deg);
+    }
+    
+    .carsRotate2 {
+      transform: rotate(-150deg);
+    }
+    
+    .nameParkingRotate {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+  }
+}

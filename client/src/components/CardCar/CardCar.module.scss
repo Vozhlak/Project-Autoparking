@@ -1,0 +1,126 @@
+$blueViolet: rgb(87, 102, 236);
+$lightBlue: rgb(231, 239, 255);
+$hoverBluViolet: rgb(112, 126, 249);
+
+.wrap__cars {
+  display: grid;
+}
+
+.wrap__cars:hover .card {
+  display: block;
+}
+
+.cars {
+  display: grid;
+  position: relative;
+  border: 1px solid $hoverBluViolet;
+  border-radius: 4px;
+  background: url('../../assets/planCars1.jpg') no-repeat center center / cover;
+  transform: rotate(-30deg);
+  padding: 15px 30px 0 30px;
+  
+  &:hover {
+    border: 2px solid $hoverBluViolet;
+  }
+}
+
+.carsRotate {
+  transform: rotate(180deg);
+}
+
+.carsRotate1 {
+  transform: rotate(-30deg);
+}
+
+.carsRotate2 {
+  transform: rotate(-150deg);
+}
+
+.nameParkingRotate {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.card {
+  display: none;
+  position: absolute;
+  z-index: 1200;
+  width: 18rem;
+  border: 2px solid $hoverBluViolet;
+  transform: rotate(0deg) translate(-55px,-80px);
+}
+
+.cardRotate {
+  transform: translate(-55px, -195px);
+
+}
+
+.cardMessage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
+
+.button {
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease 0s;
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 18px;
+  min-height: 48px;
+  padding: 14px;
+  background: $blueViolet;
+  color: white;
+  border: 1px solid $blueViolet;
+  margin-top: 20px;
+  
+  &:hover {
+    background-color:$hoverBluViolet;
+    transition: all 0.2s ease-in-out 0s;
+    border: 1px solid transparent;
+  }
+}
+
+.wrap__mestoParkingInfo {
+  text-align: left;
+  border: 1px solid $blueViolet;
+  border-radius: 4px;
+  padding: 0 10px;
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+
+  &:hover {
+    border: 1px solid $hoverBluViolet;
+    background-color: rgb(231, 239, 255);
+  }
+
+  .mestoParkingInfo__bodyDateTime {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mestoParkingInfo__calendar {
+    background: url('../../assets/calendar-with-spring-binder-and-date-blocks_icon_73645.png') no-repeat left center / 15px;
+    padding-left: 20px;
+  }
+  .mestoParkingInfo__clock {
+    background: url('../../assets/clock-with-white-face_icon72804.png') no-repeat left center / 15px;
+    padding-left: 20px;
+  }
+}
+
+.body_payment_for_parking {
+  text-align: left;
+  margin-top: 10px;
+  border: 1px solid $blueViolet;
+  border-radius: 4px;
+  padding: 5px;
+}

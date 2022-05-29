@@ -1,0 +1,126 @@
+$blueViolet: rgb(87, 102, 236);
+$lightBlue: rgb(231, 239, 255);
+$hoverBluViolet: rgb(112, 126, 249);
+
+.wpar__login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $lightBlue;
+  width: 100%;
+  padding: 94px 0px 280px;
+  text-align: center;
+
+  .form__title {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: left;
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  p {
+    margin: 5px 0px 20px;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+
+  .links {
+    color: $blueViolet;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .wrap__form {
+    width: 484px;
+    background: rgb(255, 255, 255);
+    border-radius: 20px;
+    padding: 40px 75px;
+    text-align: left;
+  }
+
+  .input {
+    line-height: 19px;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid rgb(230, 234, 238);
+    border-radius: 2px;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-weight: 500;
+    transition: all 0.2s ease 0s;
+    padding: 14px 15px 14px 0;
+
+    &:not(:first-child) {
+      margin-bottom: 1rem;
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      border: 1px solid rgb(87, 102, 236);
+      outline: rgb(87, 102, 236);
+      transition: all 0.2s ease-in-out 0s;
+    }
+  }
+
+  .email{
+    background: url('../../assets/email-ico.svg') no-repeat center left 14px;
+    padding-left:38px;
+  }
+
+  .password{
+    background: url('../../assets/pass-ico.svg') no-repeat center left 14px;
+    padding-left:38px;
+  }
+
+  .button_signIn {
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease 0s;
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 18px;
+    min-height: 48px;
+    padding: 14px;
+    background: $blueViolet;
+    color: white;
+    border: 1px solid $blueViolet;
+    
+    &:hover {
+      background-color:$hoverBluViolet;
+      transition: all 0.2s ease-in-out 0s;
+      border: 1px solid transparent;
+    }
+  }
+
+  .link_not_acc {
+    margin-top: 30px;
+    text-align: center;
+    color: $blueViolet;
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+
+.alert-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.alert-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.alert-exit {
+  opacity: 1;
+}
+.alert-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}

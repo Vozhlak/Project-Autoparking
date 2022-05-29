@@ -1,0 +1,137 @@
+$blueViolet: rgb(87, 102, 236);
+$lightBlue: rgb(231, 239, 255);
+$hoverBluViolet: rgb(112, 126, 249);
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mainPage {
+  background-color: $lightBlue;
+  width: 100%;
+  max-width: 1920px;
+  padding: 15px 20px 60px 15px;
+
+  .wrapperWidgetPlanParking1 {
+    display: grid;
+    width: 75vw;
+    margin: 0 auto;
+    border: 2px solid $blueViolet;
+    border-radius: 6px;
+    grid-template-columns: repeat(5, 150px);
+    grid-template-rows: repeat(2, 250px);
+    grid-gap: 125px 50px;
+    padding: 30px 25px 25px 25px;
+    justify-content: center;
+    background-color: white;
+
+    .wrap__cars {
+      display: grid;
+      position: relative;
+    }
+  }
+
+  // WidgetPlanParking2 start
+  .wrapperWidgetPlanParking2 {
+    display: grid;
+    width: 75vw;
+    margin: 0 auto;
+    border: 2px solid $blueViolet;
+    border-radius: 6px;
+    grid-template-columns: repeat(5, 150px);
+    grid-template-rows: repeat(2, 250px);
+    grid-gap: 125px 50px;
+    padding: 30px 25px 35px 25px;
+    justify-content: center;
+    background-color: white;
+
+    .wrap__cars {
+      display: grid;
+      position: relative;
+    }
+
+    .cars {
+      position: relative;
+      border: 1px solid $hoverBluViolet;
+      border-radius: 4px;
+      background: url('../../assets/planCars1.jpg') no-repeat center center / cover;
+      transform: rotate(-30deg);
+      padding: 15px 30px 0 30px;
+
+      &:hover .card{
+        display:block;
+      }
+    }
+
+    .carsRotate {
+      transform: rotate(-150deg);
+    }
+
+    .numberParking {
+      transform: rotate(180deg);
+    }
+  }
+
+  .wrapBtn {
+    display: flex;
+  }
+
+  .button {
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease 0s;
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 18px;
+    min-height: 48px;
+    padding: 14px;
+    background: $blueViolet;
+    color: white;
+    border: 1px solid $blueViolet;
+    margin-top: 20px;
+    
+    &:hover {
+      background-color:$hoverBluViolet;
+      transition: all 0.2s ease-in-out 0s;
+      border: 1px solid transparent;
+    }
+
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+
+  .wrapperDataParking {
+    display: flex;
+  }
+
+  .wrap__mestoParkingInfo {
+    text-align: left;
+    border: 1px solid $blueViolet;
+    border-radius: 4px;
+    padding: 5px 10px;
+
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+
+    .mestoParkingInfo__bodyDateTime {
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    .mestoParkingInfo__calendar {
+      background: url('../../assets/calendar-with-spring-binder-and-date-blocks_icon_73645.png') no-repeat left center / 15px;
+      padding-left: 20px;
+    }
+    .mestoParkingInfo__clock {
+      background: url('../../assets/clock-with-white-face_icon72804.png') no-repeat left center / 15px;
+      padding-left: 20px;
+    }
+  }
+}

@@ -1,0 +1,85 @@
+$blueViolet: rgb(87, 102, 236);
+$lightBlue: rgb(231, 239, 255);
+$hoverBluViolet: rgb(112, 126, 249);
+
+
+.header {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 85px;
+
+  .logo {
+    height: 50px;
+    width: 50px;
+  }
+
+  .navLink {
+    color: black;
+    font-size: 16px;
+    font-weight: 400;
+    padding-bottom: 5px;
+    border: none;
+
+
+    &:not(:first-child) {
+      margin-left: 42px;
+    }
+
+    &:nth-child(2) {
+      margin-left: 45px;
+    }
+
+    &:hover {
+      transition: all 0.2s ease-in-out 0s;
+      color:rgb(112, 126, 249);
+    }
+
+
+  }
+
+  .navBtn {
+    background-color: $blueViolet;
+    border: 1px solid $hoverBluViolet;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: center;
+    display: inline-block;
+    transition: all 0.2s ease-in-out 0s;
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+
+  .navBtn_sigIn {
+    min-width: 100px;
+    background-color: white;
+    color: $blueViolet;
+    text-align: center;
+    display: inline-block;
+    border: 1px solid transparent;
+    &:hover {
+      background-color:rgb(231, 239, 255);
+      border: 1px solid rgb(231, 239, 255);
+      transition: all 0.2s ease-in-out 0s;
+      align-items: center;
+
+    }
+  }
+
+  .navBtn_signUp {
+    &:hover {
+      background-color:$hoverBluViolet;
+      transition: all 0.2s ease-in-out 0s;
+      border: 1px solid transparent;
+    }
+  }
+}
