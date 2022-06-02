@@ -12,6 +12,8 @@ import { check } from '../../actions/actionUser';
 import MyLoader from '../Loader/MyLoader';
 import { PriceList } from '../../pages/PriceList/PriceList';
 import { StoryParkingReservations } from '../../pages/StoryParkingReservations/StoryParkingReservations';
+import { Footer } from '../Footer/Footer';
+import { PagePay } from '../../pages/PagePay/PagePay';
 
 const App = () => {
   const isAuth = useSelector(state => state.user.isAuth);
@@ -39,6 +41,8 @@ const App = () => {
             {isAuth && <Route path='/StoryParkingReservations' element={<StoryParkingReservations />} />}
             {!isAuth && <Route path='/StoryParkingReservations' element={<Navigate to="/" />} />}
             {isAuth && <Route path='/restore-access' element={<Navigate to="/" />} />}
+            {isAuth && <Route path='/pay' element={<PagePay />} />}
+            {!isAuth && <Route path='/pay' element={<Navigate to='/' />} />}
             <Route path='/login' element={<Login />} />
             <Route path='/registration' element={<Registration />} />
             <Route path='/restore-access' element={<RestoreAccess />} />
@@ -47,6 +51,7 @@ const App = () => {
             <Route path='*' element={<Navigate to='notFound' />} />
           </Routes>
         }
+      <Footer/>
     </div>
   );
 }

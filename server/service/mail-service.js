@@ -27,16 +27,30 @@ class mailService {
     })
   }
 
-  async sendRestoreAccessEmail(to) {
+  async sendRestoreAccessEmail(to, code) {
     await this.transporter.sendMail({
-      from: 'shun_2013@mail.ru',
+      from: 'Autoparking Online',
       to,
       subject: 'Восстановление доступа к аккаунту на Auto Parking Online',
       text: '',
       html:
         `<div>
           <h1>Для восстановления доступа к аккаунту скопируйте или введите код в поле ввода на странице</h1>
-          <div><span style='font-size: 26px'>124356</span></div>
+          <div><span style='font-size: 26px'>${code}</span></div>
+        </div>`
+    })
+  }
+
+  async sendCheckPayEmail(to, numberOrder) {
+    await this.transporter.sendMail({
+      from: 'shun_2013@mail.ru',
+      to,
+      subject: `Оплата заказа № ${numberOrder}`,
+      text: '',
+      html:
+        `<div>
+          <div>Уважаемый пользователь ${to}, вы забронировали в парковочном центре!</div>
+          
         </div>`
     })
   }

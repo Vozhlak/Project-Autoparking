@@ -23,6 +23,7 @@ router.get('/parking/getUserParking/:id', authMiddleware, parkingController.getA
 router.post('/parking/update/:id', parkingController.setIsUsedCurrentParking);
 router.post('/parking/createFloor', parkingController.createParkingFloor);
 router.post('/parking/createParkingReservations', authMiddleware, parkingController.createParkingReservations);
-router.get('/parking/getStoryParking', parkingController.getStoryParking);
+router.get('/parking/getStoryParking/:id', authMiddleware, parkingController.getStoryParking);
+router.post('/parking/sendEmailCheckPay', authMiddleware, parkingController.senEmailCheckPAy);
 
 module.exports = router;

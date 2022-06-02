@@ -1,0 +1,41 @@
+.wrapPriceList {
+  width: 100%;
+  max-width: 1130px;
+  margin: 0 auto;
+
+  .title {
+    margin-top: 80px;
+    margin-bottom: 30px;
+  }
+
+  .wrapPriceListBody {
+    height: 70vh;
+  }
+
+  .wrapUslugi {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .itemUslugi {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgb(87, 102, 236);
+    border-radius: 4px;
+    width: 250px;
+    padding: 0 15px;
+
+    &:not(:first-child) {
+      margin-left: 50px;
+    }
+  }
+
+  .icoUslug {
+    height: 200px;
+    width: 200px;
+  }
+}

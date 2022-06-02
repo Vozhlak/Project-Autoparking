@@ -31,7 +31,7 @@ export const login = (email, password) => {
       console.log('Login: ', response.data.user);
     }
     catch(e) {
-      console.error(e);
+      return console.error(e.error);
     }
   }
 }

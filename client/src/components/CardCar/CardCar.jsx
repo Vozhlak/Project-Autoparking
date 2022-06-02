@@ -16,34 +16,39 @@ const CardCar = (props) => {
   const [timeDeparture, setTimeDeparture] = useState('');
   const [text, setText] = useState('Парковочное место №');
   const [textBtn, setTextBtn] = useState('Оплатить');
+  const [typeBtn, setTypeBtn] = useState('PayBtn');
   const [type, setType] = useState('');
   const [dataVisible, setDataVisible] = useState(false);
   const [visiblePanelPay, setVisiblePanelPay] = useState(false);
   const isAuth = useSelector(state => state.user.isAuth);
   const userID = useSelector(state => state.user.currentUser.id);
+  const isUsed = useSelector(state => state.parking.getAuthParking.isUsed);
   const dates = useSelector(state => state.date);
   const [user, setUser] = useState(null);
   
+  const [isUsedParking, setIsUsedParking] = useState(false);
+
   const st = () => {
     if(props.props.ParkingReservations.length === 0) {
+      setIsUsedParking(true);
       setText('Парковочное место №');
       setDataVisible(true);
       setVisiblePanelPay(true);
       setTextBtn('Оплатить');
-      // console.log(calculateCostParking(dates.dateAndtimeArrival, dates.dateAndtimeDeparture));
       setDateArrival(getFormatDate(dates.dateAndtimeArrival));
       setDateDeparture(getFormatDate(dates.dateAndtimeDeparture));
       setTimeArrival(getFormatTime(new Date().getTime()));
       setTimeDeparture(getFormatTime(new Date().getTime()));
       setDateNoFormatArrival(dates.dateAndtimeArrival);
       setDateNoFormatDeparture(dates.dateAndtimeDeparture);
+      setTypeBtn('payBtn');
     } else {
       if(props.props.ParkingReservations.length > 0 && props.props.ParkingReservations[0].UserId === userID) {
+        setIsUsedParking(true)
         setText('Ваше парковочное место №');
         setDataVisible(true);
-        setTextBtn('Отменить бронь');
+        setTypeBtn('deleteBronBtn')
         setUser(props.props.ParkingReservations[0].UserId);
-        // console.log(calculateCostParking(props.props.ParkingReservations[0].dateAndTimeOfArrival, props.props.ParkingReservations[0].dateAndTimeOfDeparture))
         setDateArrival(getFormatDate(props.props.ParkingReservations[0].dateAndTimeOfArrival));
         setDateDeparture(getFormatDate(props.props.ParkingReservations[0].dateAndTimeOfDeparture));
         setTimeArrival(getFormatTime(props.props.ParkingReservations[0].dateAndTimeOfArrival));
@@ -122,24 +127,10 @@ const CardCar = (props) => {
     }
   }
 
-  const tybeBtn = (type, id) => {
-    if(type === 'pay') {
-      if(props.props.id === id) {
-        PayParking(props.props.id)
-      }
-    } else
-    if(type === 'delete') {
-      if(props.props.id === id) {
-        UpdateDataParking(props.props.id)
-      }
-    }
-    
-  
-  }
   const UpdateDataParking = (id) => {
     if(props.props.id === id) {
-      props.modalVisible1(id, "DeleteBron");
-      console.log(props)
+      props.modalDeleteVisible(id, "DeleteBron");
+      console.log(props);
     } else {
       console.log(false);
     }
@@ -147,7 +138,7 @@ const CardCar = (props) => {
 
   const PayParking = (id) => {
     if(props.props.id === id) {
-      props.modalVisible1(id, "PayParkingBron", {dateArrival: dateArrival, dateNoFormatArrival: dateNoFormatArrival,
+      props.modalPayVisible(id, "PayParkingBron", {dateArrival: dateArrival, dateNoFormatArrival: dateNoFormatArrival,
         dateDeparture: dateDeparture, dateNoFormatDeparture: dateNoFormatDeparture,
         timeArrival: timeArrival, timeDeparture: timeDeparture, nameParking: props.props.nameParking,
         parkingFloor: props.props.ParkingFloorId});
@@ -198,7 +189,7 @@ const CardCar = (props) => {
           <Card.Title style={{fontSize: 16}}>
             {text} {props.props.nameParking}
           </Card.Title>
-          {!dataVisible ?
+          {!isUsedParking ?
           <div className={`${styles.wrap__mestoParkingInfo} ${styles.cardMessage}`}>
             <p>Место занято</p>
           </div>
@@ -249,11 +240,11 @@ const CardCar = (props) => {
                 ₽ 
               </div>
             }
-            {!isAuth && 
-              <p>Для оплаты вам необходимо авторизоваться</p>
-            }
-            {
-              <button className={styles.button} onClick={() => tybeBtn('pay', props.props.id)}>{textBtn}</button>
+            {typeBtn === 'payBtn' 
+            ? 
+              <button className={styles.button} onClick={() => PayParking(props.props.id)}>Оплатить</button>
+            :
+              <button className={styles.button} onClick={() => UpdateDataParking(props.props.id)}>Отменить бронь</button>
             }
           </Card.Text>
           }

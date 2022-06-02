@@ -2,6 +2,7 @@ const SET_PARKING = 'SET_PARKING';
 const SET_AUTH_PARKING = 'SET_AUTH_PARKING';
 const CREATE_PARKING_RESERVATIONS = 'CREATE_PARKING_RESERVATIONS';
 const SET_IsUSED = 'SET_IsUSED';
+const SET_STORY_PARKING_RESERVATIONS = 'SET_STORY_PARKING_RESERVATIONS';
 
 const defaultState = {
   currentParking: {},
@@ -33,6 +34,11 @@ export const parkingReducer = (state = defaultState, action) => {
         currentParking: action.payload.parking,
         isUsed: true
       }
+    case SET_STORY_PARKING_RESERVATIONS:
+      return {
+        ...state,
+        parking: action.payload,
+      }
     default:
       return state;
   }
@@ -42,3 +48,4 @@ export const setParking = (parking) => ({type: SET_PARKING, payload: parking});
 export const setAuthParking = (userParking) => ({type: SET_AUTH_PARKING, payload: userParking});
 export const setIsUsedParking = (parking) => ({type: SET_IsUSED, payload: parking});
 export const createParkingReservations = (userParking) => ({type: CREATE_PARKING_RESERVATIONS, payload: userParking});
+export const setStoryParkingReservations = (storyParkingReservations) => ({type: SET_STORY_PARKING_RESERVATIONS, payload: storyParkingReservations});

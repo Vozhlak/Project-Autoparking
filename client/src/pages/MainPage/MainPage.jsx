@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'
 import styles from './MainPage.module.scss';
 import { Carousel } from 'react-bootstrap';
-import { getParking, getAuthParking, createParkingUSerReservations } from '../../actions/actionParking';
+import { getAuthParking, getParkingReservations, setisUsed } from '../../actions/actionParking';
 import { CardCar } from '../../components/CardCar/CardCar';
 import MyLoader from '../../components/Loader/MyLoader';
 import Modal from '../../components/Modal/MyModal';
 import { CustomCalendar as Calendar } from '../../components/Calendar/Calendar';
 import { useDispatch, useSelector } from 'react-redux';
+import { setPay } from '../../redux/payReducer';
 
 const MainPage = () => {
   const [index, setIndex] = useState(0);
@@ -25,17 +27,26 @@ const MainPage = () => {
   const [parkingName, setParkingName] = useState('');
   const [parkingFloor, setParkingFloor] = useState('');
   const [costBookingParking, setCostBookingParking] = useState('');
+  const [error, setError] = useState(false);
+  let navigate = useNavigate();
   
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.currentUser)
   const isAuth = useSelector(state => state.user.isAuth);
   const userParking = useSelector(state => state.parking);
-  const parkings = useSelector(state => state)
 
   const visibleModal = (id, text, type) => {
     setModal(true);
     setTextModal(text);
     setTypeModal(type);
+    setIdCard(id);
+  }
+
+  const visibleModalDelete = (id, type) => {
+    console.log(id);
+    console.log(userParking);
+    setModal(true);
+    setTypeModal(type); 
     setIdCard(id);
   }
 
@@ -64,12 +75,15 @@ const MainPage = () => {
   const handleChangeNumberAuto = (event) => {
     const numberValue = event.target.value;
     setNumberAuto(numberValue);
+    if(error) {
+      setError(false);
+    }
   }
 
   useEffect(() => {
-    setIsLoading(isLoading);
     dispatch(getAuthParking(user.id));
-    setIsLoading(!isLoading);
+    dispatch(getParkingReservations(user.id));
+    setIsLoading(false);
   }, []);
   
   const handleSelect = (selectedIndex) => {
@@ -80,9 +94,19 @@ const MainPage = () => {
     if(userId && ParkingId && timeArrival && timeDeparture && numberAuto && theCostOfParking) {
       const dateArrival = new Date(noDateFormatesArrival).toDateString();
       const dateDeparture = new Date(noDateFormatedDeparture).toDateString();
-      dispatch(createParkingUSerReservations(userId, ParkingId, dateArrival+" "+timeArrival, dateDeparture+" "+timeDeparture, numberAuto, theCostOfParking));
+      const fullDateTimeArrival = dateArrival+" "+timeArrival;
+      const fullDateTimeDeparture = dateDeparture+" "+timeDeparture;
+      dispatch(setPay({currentPay: {
+        userId,
+        ParkingId,
+        fullDateTimeArrival,
+        fullDateTimeDeparture,
+        numberAuto,
+        theCostOfParking
+      }}));
+      navigate('/pay');
     } else {
-      console.log("error");
+      setError(true);
     }
   }
 
@@ -102,7 +126,7 @@ const MainPage = () => {
                 {isAuth &&
                   userParking.getAuthParking && userParking.getAuthParking.map(p =>
                   <div className={styles.wrap__cars} key={p.id}>
-                    <CardCar props={p} modalVisible={visibleModal} modalVisible1={visibleModalPayBron}/>
+                    <CardCar props={p} modalVisible={visibleModal} modalPayVisible={visibleModalPayBron} modalDeleteVisible={visibleModalDelete}/>
                   </div>)
                 }
               </>
@@ -120,7 +144,7 @@ const MainPage = () => {
                 {isAuth &&
                   userParking.getAuthParking1 && userParking.getAuthParking1.map(p =>
                   <div className={styles.wrap__cars} key={p.id}>
-                    <CardCar props={p} modalVisible={visibleModal} modalVisible1={visibleModalPayBron}/>
+                    <CardCar props={p} modalVisible={visibleModal} modalPayVisible={visibleModalPayBron} modalDeleteVisible={visibleModalDelete}/>
                   </div>)
                 }
               </>
@@ -184,6 +208,7 @@ const MainPage = () => {
                 placeholder='o111oo'
                 maxLength={6}
               />
+              {error && <div style={{color: 'red'}}>Поле для ввода не может быть пустым</div>}
             </div>
             <div className={styles.wrapBtn}>
               <button className={styles.button} onClick={() => bookingPayment(user.id, idCard, timeArrival, timeDeparture, numberAuto, costBookingParking)}>Перейти к оплате</button>

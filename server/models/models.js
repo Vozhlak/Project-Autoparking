@@ -30,8 +30,8 @@ const ParkingReservations = sequelize.define('ParkingReservations', {
 
 const StoryParkingReservation = sequelize.define('StoryParkingReservation', {
   id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-  userId: {type: DataTypes.INTEGER, allowNull: false},
-  parkingId: {type: DataTypes.INTEGER, allowNull: false},
+  email: {type: DataTypes.STRING, allowNull: false},
+  parking: {type: DataTypes.STRING, allowNull: false},
   dateAndTimeOfArrival: {type: DataTypes.DATE, allowNull: false},
   dateAndTimeOfDeparture: {type: DataTypes.DATE, allowNull: false},
   numberAuto: {type: DataTypes.STRING, allowNull: false},

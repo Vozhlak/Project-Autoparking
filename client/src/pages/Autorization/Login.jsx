@@ -41,8 +41,18 @@ const Login = () => {
   }
 
   const signIn = () => {
-    dispatch(login(email, password));
-    setIsLogin(!isLogin);
+    dispatch(login(email, password))
+    .then(res => {
+      console.log(res);
+    })
+    .catch(error => {
+      if(error.response.data.type === 'customPassword') {
+        setError1(error.response.data.message);
+      }
+      if(error.response.data.type === 'customEmail') {
+        setError(error.response.data.message);
+      }
+    })
   }
 
   return (

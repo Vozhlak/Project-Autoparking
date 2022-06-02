@@ -1,4 +1,5 @@
 const { Parking, ParkingFloor, ParkingReservations, StoryParkingReservation, User } = require("../models/models");
+const mailService = require('../service/mail-service');
 
 class parkingController {
 
@@ -94,22 +95,31 @@ class parkingController {
     })
   }
 
+  formatedDate(date) {
+    const dateFormat = new Date(date);
+    const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабрь'];
+    const year = dateFormat.getFullYear();
+    const month = months[dateFormat.getMonth()];
+    const day = dateFormat.getDate();
+    const fullDate = day + " " + month + year;
+    return fullDate;
+  }
+
   async createParkingReservations (req, res) {
-    const {userId, parkingId, timeArrival, timeDeparture, numberAuto, theCostOfParking} = req.body;
+    const {userId, parkingId, timeArrival, timeDeparture, numberAuto, theCostOfParking, numberOrder} = req.body;
     try {
       const user = await User.findOne({where: {id: userId}})
       if(!user) {
         return res.status(404).json({message: "Пользователь не найден"});
       }
 
-      const parking = await Parking.findOne({where: {id: parkingId}})
-      if(parking.isUsed) {
-        return res.status(400).json({message: "Этот паркинг уже занят"});
-      }
+      const parking = await Parking.findOne({where: {id: parkingId}, include: {model: ParkingFloor, attributes: ['nameParkingFloor']}});
+
+      const infoParking = `${parking.ParkingFloorId} Этаж ${parking.nameParking}`;
 
       await StoryParkingReservation.create({
-        userId: user.id,
-        parkingId: parkingId,
+        email: user.email,
+        parking: infoParking,
         dateAndTimeOfArrival: timeArrival,
         dateAndTimeOfDeparture: timeDeparture,
         numberAuto,
@@ -134,18 +144,58 @@ class parkingController {
     }
   }
 
-  async getStoryParking(req, res) {
-    const {userId} = req.body;
+  async senEmailCheckPAy(req, res) {
+    const {userId, parkingId, timeArrival, timeDeparture, numberAuto, theCostOfParking, numberOrder} = req.body;
     try {
       const user = await User.findOne({where: {id: userId}})
       if(!user) {
         return res.status(404).json({message: "Пользователь не найден"});
       }
 
-      const storyParkingReservations = await StoryParkingReservation.findAll({where: {userId: user.id}});
+      const parking = await Parking.findOne({where: {id: parkingId}, include: {model: ParkingFloor, attributes: ['nameParkingFloor']}});
 
-      const parking = await Parking.findOne({Where: {id: storyParkingReservations.parkingId}});
-      return res.json({user, storyParkingReservations});
+      const infoParking = `${parking.ParkingFloorId} Этаж ${parking.nameParking}`;
+
+      const timeArr = timeArrival.substring(11, 16);
+      const timeDep = timeDeparture.substring(11, 16);
+      const formatedDateArrival = this.formatedDate(timeArrival);
+      const formatedDateDeparture = this.formatedDate(timeDeparture);
+
+      const dataPay = {
+        infoParking,
+        formatedDateArrival,
+        formatedDateDeparture,
+        timeArr,
+        timeDep,
+        numberAuto,
+        theCostOfParking,
+        numberOrder
+      }
+
+      mailService.sendCheckPayEmail(user.email, 543465);
+      return res.json({
+        message: "Сообщение успешно отправлено"
+      })
+    }
+    catch(e) {
+      console.log(e);
+    }
+  }
+
+  async getStoryParking(req, res) {
+    const {id} = req.params;
+    try {
+      const user = await User.findOne({where: {id}})
+      if(!user) {
+        return res.status(404).json({message: "Пользователь не найден"});
+      }
+
+      const storyParkingReservations = await StoryParkingReservation.findAll({
+        attributes: ['id', 'email', 'parking', 'dateAndTimeOfArrival', 'dateAndTimeOfDeparture', 'numberAuto', 'theCostOfParking'],
+        where: {email: user.email}
+      });
+
+      return res.json({storyParkingReservations});
     } catch(e) {
       console.log(e);
     }

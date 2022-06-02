@@ -1,0 +1,16 @@
+.wrapFooter {
+  padding: 50px 50px;
+  .borderLineWrap {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    border-top: 2px solid rgb(112, 126, 249);
+  }
+
+  .logo {
+    height: 50px;
+    width: 50px;
+  }
+}

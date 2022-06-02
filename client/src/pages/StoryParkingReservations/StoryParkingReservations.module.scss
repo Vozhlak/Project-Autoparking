@@ -1,0 +1,65 @@
+$blueViolet: rgb(87, 102, 236);
+$lightBlue: rgb(231, 239, 255);
+$hoverBluViolet: rgb(112, 126, 249);
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.wrapStoryParkingReservations {
+  background-color: $lightBlue;
+  width: 100%;
+  max-width: 1920px;
+  padding: 15px 20px 60px 15px;
+}
+
+.title {
+  text-align: center;
+}
+
+.wrapList {
+  width: 75vw;
+  height: 75vh;
+  margin: 0 auto;
+  background-color: white;
+  margin-top: 50px;
+  border-radius: 4px;
+  overflow: auto;
+}
+
+.wrapHeaderList {
+  border-bottom: 5px solid rgb(231, 239, 255);
+  text-align: left;
+}
+
+.headerList {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  height: 65px;
+  font-weight: 900;
+  padding: 0;
+}
+
+.headerItem {
+  width: 300px;
+  text-align: center;
+  padding-top: 5px;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-around;
+  height: 50px;
+  border-bottom: 1px solid rgb(87, 102, 236);
+  padding: 0;
+}
+
+.item {
+  width: 300px;
+  text-align: center;
+  margin-top: 10px;
+}

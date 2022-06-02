@@ -115,7 +115,7 @@
 }
 
 .button:hover {
-  background-color: #6e48ebd8;;
+  background-color: #6e48ebd8;
   transition: all 0.2s ease-in-out 0s;
   border: 1px solid transparent;
 }
