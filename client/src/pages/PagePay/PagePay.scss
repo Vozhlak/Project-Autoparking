@@ -3,6 +3,7 @@
   max-width: 600px;
   height: 70vh;
   justify-content: center;
+  align-items: center;
   border: 1px solid black;
   margin: 0 auto;
   text-align: center;
@@ -11,37 +12,5 @@
 }
 
 .title {
-  margin-top: 50px;
-}
-
-.wrapBtn {
-  display: grid;
-  justify-content: center;
-}
-
-.btn {
-  width: 300px;
-  font-weight: 500;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease 0s;
-  display: block;
-  width: 100%;
-  border-radius: 4px;
-  font-size: 14px;
-  line-height: 18px;
-  min-height: 48px;
-  padding: 14px;
-  background: rgb(87, 102, 236);
-  color: white;
-  border: 1px solid rgb(87, 102, 236);
-  margin-top: 20px;
-  
-}
-
-.btn:hover {
-  background-color: rgb(112, 126, 249);
-  transition: all 0.2s ease-in-out 0s;
-  border: 1px solid transparent;
-  color: white;
+  margin-top: 250px;
 }

@@ -29,7 +29,6 @@ $hoverBluViolet: rgb(112, 126, 249);
 
     .wrap__cars {
       display: grid;
-      position: relative;
     }
   }
 
@@ -122,7 +121,12 @@ $hoverBluViolet: rgb(112, 126, 249);
 
     .mestoParkingInfo__bodyDateTime {
       display: flex;
-      justify-content: space-between;
+    }
+
+    .bodyTime {
+      &:not(:first-child) {
+        margin-left: 15px;
+      }
     }
   
     .mestoParkingInfo__calendar {

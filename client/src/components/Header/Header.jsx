@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../assets/Logo.png';
 import styles from './Header.module.scss';
-import { Navigate, NavLink } from 'react-router-dom';
+import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 import { logout } from '../../redux/userReducer';
 import { check } from '../../actions/actionUser';
 
@@ -15,8 +15,11 @@ const Header = () => {
   const nameUser = email ? email : 'UserName';
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   function logouted() {
     dispatch(logout());
+    navigate('/login');
   }
 
   return (

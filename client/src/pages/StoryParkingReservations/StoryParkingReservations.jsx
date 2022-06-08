@@ -11,12 +11,13 @@ const StoryParkingReservations = () => {
 
   useEffect(() => {
     dispatch(getParkingReservations(userId));
+    console.log(StoryParkingReservations);
   }, []);
 
   function getFormatDate(nowDate) {
     const newDate = new Date(nowDate);
-
-    const time = nowDate.substring(11, 16);
+    const time = newDate.toString();
+    const Newtime = time.substring(16, 21);
 
     const days = ["Вс,", "Пн,", "Вт,", "Ср,", "Чт,", "Пт,", "Сб,"]
     const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабрь'];
@@ -24,7 +25,7 @@ const StoryParkingReservations = () => {
     const dayWeek = days[newDate.getDay()];
     const month = months[newDate.getMonth()];
     const formatedDate = dayWeek+' '+dateMonth+' '+month;
-    return formatedDate+" "+time;
+    return formatedDate+" "+Newtime;
   }
 
   return (
@@ -47,9 +48,9 @@ const StoryParkingReservations = () => {
             </ul>
           </div>
           <div className={styles.wrapItem}>
-          {StoryParkingReservations && StoryParkingReservations.map(storyParking => 
+          {StoryParkingReservations && StoryParkingReservations.map((storyParking, index) => 
             <div className={styles.listItem} key={storyParking.id}>
-              <span className={styles.item}>{storyParking.id}</span>
+              <span className={styles.item}>{index + 1}</span>
               <span className={styles.item}>{getFormatDate(storyParking.dateAndTimeOfArrival)}</span>
               <span className={styles.item}>{getFormatDate(storyParking.dateAndTimeOfDeparture)}</span>
               <span className={styles.item}>{storyParking.numberAuto}</span>

@@ -29,7 +29,7 @@ class mailService {
 
   async sendRestoreAccessEmail(to, code) {
     await this.transporter.sendMail({
-      from: 'Autoparking Online',
+      from: 'shun_2013@mail.ru',
       to,
       subject: 'Восстановление доступа к аккаунту на Auto Parking Online',
       text: '',
@@ -41,17 +41,22 @@ class mailService {
     })
   }
 
-  async sendCheckPayEmail(to, numberOrder) {
+  async sendCheckPayEmail(to, dataPay) {
     await this.transporter.sendMail({
       from: 'shun_2013@mail.ru',
       to,
-      subject: `Оплата заказа № ${numberOrder}`,
+      subject: `Оплата заказа № ${dataPay.NumberOrder}`,
       text: '',
       html:
         `<div>
-          <div>Уважаемый пользователь ${to}, вы забронировали в парковочном центре!</div>
-          
-        </div>`
+          <h1>Бронирование парковочного места в системе "Автопаркинг"\n Номер брони ${dataPay.NumberOrder}</h1>
+          <p>Вы забронировали в системе "Автопаркинг" парковочное место ${dataPay.infoParking}</p>
+          <p>Дата прибытия: ${dataPay.formatedDateArrival} время: ${dataPay.timeArr}</p>
+          <p>Дата отъезда: ${dataPay.formatedDateDeparture} время: ${dataPay.timeDep}</p>
+          <p>Номер автомобиля: ${dataPay.NumberAuto}</p>
+          <p>Стоимость услуг составила: ${dataPay.TheCostOfParking}</p>
+        </div>
+        `
     })
   }
 }

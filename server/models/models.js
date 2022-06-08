@@ -24,7 +24,7 @@ const ParkingReservations = sequelize.define('ParkingReservations', {
   id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
   dateAndTimeOfArrival: {type: DataTypes.DATE},
   dateAndTimeOfDeparture: {type: DataTypes.DATE},
-  numberAuto: {type: DataTypes.STRING, unique: true},
+  numberAuto: {type: DataTypes.STRING},
   theCostOfParking: {type: DataTypes.DECIMAL}
 })
 
@@ -36,6 +36,18 @@ const StoryParkingReservation = sequelize.define('StoryParkingReservation', {
   dateAndTimeOfDeparture: {type: DataTypes.DATE, allowNull: false},
   numberAuto: {type: DataTypes.STRING, allowNull: false},
   theCostOfParking: {type: DataTypes.DECIMAL, allowNull: false},
+});
+
+const PaymentConfirmation = sequelize.define('PaymentConfirmation', {
+  id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+  billIdQiwi: {type: DataTypes.STRING},
+  numberOrder: {type: DataTypes.STRING, unique: true},
+  parkingId: {type: DataTypes.INTEGER},
+  userId: {type: DataTypes.INTEGER},
+  dateAndTimeOfArrival: {type: DataTypes.DATE},
+  dateAndTimeOfDeparture: {type: DataTypes.DATE},
+  numberAuto: {type: DataTypes.STRING},
+  theCostOfParking: {type: DataTypes.DECIMAL}
 });
 
 ParkingFloor.hasMany(Parking);
@@ -52,5 +64,6 @@ module.exports = {
   Parking,
   ParkingFloor,
   ParkingReservations,
-  StoryParkingReservation
+  StoryParkingReservation,
+  PaymentConfirmation
 };

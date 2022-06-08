@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styles from './CardCar.module.scss';
 import { Card } from 'react-bootstrap';
 import parkingA1 from '../../assets/ParkingA149939-170667a.jpg';
-import { setisUsed } from '../../actions/actionParking';
+import { convertLength } from '@mui/material/styles/cssUtils';
 
 const CardCar = (props) => {
   const [dateArrival, setDateArrival] = useState('');
@@ -15,22 +15,20 @@ const CardCar = (props) => {
   const [timeArrival, setTimeArrival] = useState('');
   const [timeDeparture, setTimeDeparture] = useState('');
   const [text, setText] = useState('Парковочное место №');
+  const [cost, setCost] = useState('Парковочное место №');
   const [textBtn, setTextBtn] = useState('Оплатить');
   const [typeBtn, setTypeBtn] = useState('PayBtn');
   const [type, setType] = useState('');
   const [dataVisible, setDataVisible] = useState(false);
   const [visiblePanelPay, setVisiblePanelPay] = useState(false);
-  const isAuth = useSelector(state => state.user.isAuth);
   const userID = useSelector(state => state.user.currentUser.id);
-  const isUsed = useSelector(state => state.parking.getAuthParking.isUsed);
   const dates = useSelector(state => state.date);
   const [user, setUser] = useState(null);
   
-  const [isUsedParking, setIsUsedParking] = useState(false);
+  const [isUsedParking, setIsUsedParking] = useState(props.props.isUsed);
 
   const st = () => {
     if(props.props.ParkingReservations.length === 0) {
-      setIsUsedParking(true);
       setText('Парковочное место №');
       setDataVisible(true);
       setVisiblePanelPay(true);
@@ -41,10 +39,10 @@ const CardCar = (props) => {
       setTimeDeparture(getFormatTime(new Date().getTime()));
       setDateNoFormatArrival(dates.dateAndtimeArrival);
       setDateNoFormatDeparture(dates.dateAndtimeDeparture);
+      setCost('1')
       setTypeBtn('payBtn');
     } else {
       if(props.props.ParkingReservations.length > 0 && props.props.ParkingReservations[0].UserId === userID) {
-        setIsUsedParking(true)
         setText('Ваше парковочное место №');
         setDataVisible(true);
         setTypeBtn('deleteBronBtn')
@@ -55,6 +53,7 @@ const CardCar = (props) => {
         setTimeDeparture(getFormatTime(props.props.ParkingReservations[0].dateAndTimeOfDeparture));
         setDateNoFormatArrival(props.props.ParkingReservations[0].dateAndTimeOfArrival);
         setDateNoFormatDeparture(props.props.ParkingReservations[0].dateAndTimeOfDeparture);
+        setCost(props.props.ParkingReservations[0].theCostOfParking)
         if(user) {
           setVisiblePanelPay(false);
         }
@@ -128,7 +127,7 @@ const CardCar = (props) => {
   }
 
   const UpdateDataParking = (id) => {
-    if(props.props.id === id) {
+    if(props.props.ParkingReservations[0].id === id) {
       props.modalDeleteVisible(id, "DeleteBron");
       console.log(props);
     } else {
@@ -141,7 +140,7 @@ const CardCar = (props) => {
       props.modalPayVisible(id, "PayParkingBron", {dateArrival: dateArrival, dateNoFormatArrival: dateNoFormatArrival,
         dateDeparture: dateDeparture, dateNoFormatDeparture: dateNoFormatDeparture,
         timeArrival: timeArrival, timeDeparture: timeDeparture, nameParking: props.props.nameParking,
-        parkingFloor: props.props.ParkingFloorId});
+        parkingFloor: props.props.ParkingFloorId, costParking: cost});
       console.log(props)
     } else {
       console.log(false);
@@ -175,7 +174,8 @@ const CardCar = (props) => {
     if(dates.newTimeDeparture !== undefined || dates.newTimeDeparture !== null) {
       getUpdateTimeDeparture(dates.newTimeDeparture, dates.idDeparture);
     }
-  }, [dates]);
+    setIsUsedParking(props.props.isUsed);
+  }, [dates, props.props.isUsed]);
 
   return (
     <div className={`${styles.wrap__cars}`}>
@@ -186,68 +186,92 @@ const CardCar = (props) => {
       <Card className={`${styles.card} ${(props.props.id > 5 && props.props.id <= 10) || (props.props.id > 15 && props.props.id <= 20) ? styles.cardRotate : ''}`}>
         <Card.Img variant="top" src={parkingA1} height={180} width={180}/>
         <Card.Body>
-          <Card.Title style={{fontSize: 16}}>
-            {text} {props.props.nameParking}
-          </Card.Title>
-          {!isUsedParking ?
-          <div className={`${styles.wrap__mestoParkingInfo} ${styles.cardMessage}`}>
-            <p>Место занято</p>
-          </div>
-          :
-          <Card.Text>
-          {!user &&
-            <div className={styles.wrap__mestoParkingInfo} onClick={() => getModal(props.props.id,'Выберите дату прибытия', 'modalArrival')}>
-              <span>Прибытие</span>
-              <div className={styles.mestoParkingInfo__bodyDateTime}>
-                <div>
-                  <span className={styles.mestoParkingInfo__calendar}>{dateArrival}</span>
-                </div>
-                <div>
-                  <span className={styles.mestoParkingInfo__clock}>{timeArrival}</span>
-                </div>
+              {!props.props.isUsed ?
+              <div>
+                <Card.Title style={{fontSize: 16}}>
+                  {text} {props.props.nameParking}
+                </Card.Title>
+                <Card.Text>
+                  <div>
+                    <div className={styles.wrap__mestoParkingInfo} onClick={() => getModal(props.props.id,'Выберите дату прибытия', 'modalArrival')}>
+                      <span>Прибытие</span>
+                      <div className={styles.mestoParkingInfo__bodyDateTime}>
+                        <div>
+                          <span className={styles.mestoParkingInfo__calendar}>{dateArrival}</span>
+                        </div>
+                        <div>
+                          <span className={styles.mestoParkingInfo__clock}>{timeArrival}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.wrap__mestoParkingInfo} onClick={() => getModal(props.props.id, 'Выберите дату отъезда', 'modalDeparture')}>
+                      <span>Отъезд</span>
+                      <div className={styles.mestoParkingInfo__bodyDateTime}>
+                        <div>
+                          <span className={styles.mestoParkingInfo__calendar}>{dateDeparture}</span>
+                        </div>
+                        <div>
+                          <span className={styles.mestoParkingInfo__clock}>{timeDeparture}</span>
+                        </div>
+                      </div>
+                    </div>
+                    {visiblePanelPay &&
+                      <div className={styles.body_payment_for_parking}>
+                        Итого к оплате: 
+                        <span style={{fontSize: 16, fontWeight: 500, paddingLeft: 10}}>{cost}.00 </span>
+                        ₽ 
+                      </div>
+                    }
+                      <button className={styles.button} onClick={() => PayParking(props.props.id)}>Оплатить</button>
+                  </div>
+                </Card.Text>
               </div>
-            </div>
-          }
-          {!user && 
-            <div className={styles.wrap__mestoParkingInfo} onClick={() => getModal(props.props.id, 'Выберите дату отъезда', 'modalDeparture')}>
-              <span>Отъезд</span>
-              <div className={styles.mestoParkingInfo__bodyDateTime}>
+                :
+                props.props.isUsed &&
+                props.props.ParkingReservations.length > 0 &&
+                props.props.ParkingReservations[0].ParkingId === props.props.id &&
+                props.props.ParkingReservations[0].UserId && props.props.ParkingReservations[0].UserId === userID ?
                 <div>
-                  <span className={styles.mestoParkingInfo__calendar}>{dateDeparture}</span>
+                  <Card.Title style={{fontSize: 16}}>
+                    Ваше парковочное место № {props.props.nameParking}
+                  </Card.Title>
+                  <Card.Text>
+                    <div>
+                      <div className={styles.wrap__mestoParkingInfo} onClick={() => getModal(props.props.id, 'Выберите дату отъезда', 'modalDeparture')}>
+                        <span>Отъезд</span>
+                        <div className={styles.mestoParkingInfo__bodyDateTime}>
+                          <div>
+                            <span className={styles.mestoParkingInfo__calendar}>{dateDeparture}</span>
+                          </div>
+                          <div>
+                            <span className={styles.mestoParkingInfo__clock}>{timeDeparture}</span>
+                          </div>
+                        </div>
+                      </div>
+                      {visiblePanelPay &&
+                        <div className={styles.body_payment_for_parking}>
+                          Итого к оплате: 
+                          <span style={{fontSize: 16, fontWeight: 500, paddingLeft: 10}}>{cost}.00 </span>
+                          ₽ 
+                        </div>
+                      }
+                        <button className={styles.button} onClick={() => UpdateDataParking(props.props.ParkingReservations[0].id)}>Отменить бронь</button>
+                    </div>
+                  </Card.Text>
                 </div>
+                :
                 <div>
-                  <span className={styles.mestoParkingInfo__clock}>{timeDeparture}</span>
+                  <Card.Title style={{fontSize: 16}}>
+                    {text} {props.props.nameParking}
+                  </Card.Title>
+                  <Card.Text>
+                    <div className={`${styles.wrap__mestoParkingInfo} ${styles.cardMessage}`}>
+                      <p>Место занято</p>
+                      <p>{props.props.ParkingReservations.ParkingId}</p>
+                    </div>
+                  </Card.Text>
                 </div>
-              </div>
-            </div>
-          }
-          {user && <div className={styles.wrap__mestoParkingInfo} onClick={() => getModal(props.props.id, 'Выберите дату отъезда', 'modalDeparture')}>
-              <span>Отъезд</span>
-              <div className={styles.mestoParkingInfo__bodyDateTime}>
-                <div>
-                  <span className={styles.mestoParkingInfo__calendar}>{dateDeparture}</span>
-                </div>
-                <div>
-                  <span className={styles.mestoParkingInfo__clock}>{timeDeparture}</span>
-                </div>
-              </div>
-            </div>
-          }
-            {visiblePanelPay &&
-              <div className={styles.body_payment_for_parking}>
-                Итого к оплате: 
-                <span style={{fontSize: 16, fontWeight: 500, paddingLeft: 10}}>60 </span>
-                ₽ 
-              </div>
-            }
-            {typeBtn === 'payBtn' 
-            ? 
-              <button className={styles.button} onClick={() => PayParking(props.props.id)}>Оплатить</button>
-            :
-              <button className={styles.button} onClick={() => UpdateDataParking(props.props.id)}>Отменить бронь</button>
-            }
-          </Card.Text>
-          }
+              }
         </Card.Body>
       </Card>
     </div>

@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'
 import styles from './MainPage.module.scss';
 import { Carousel } from 'react-bootstrap';
-import { getAuthParking, getParkingReservations, setisUsed } from '../../actions/actionParking';
+import { getAuthParking, getParkingReservations, cancel_Reservations, createParkingUSerReservations, setisUsed } from '../../actions/actionParking';
+import { createPay } from '../../actions/actionPay';
 import { CardCar } from '../../components/CardCar/CardCar';
 import MyLoader from '../../components/Loader/MyLoader';
 import Modal from '../../components/Modal/MyModal';
 import { CustomCalendar as Calendar } from '../../components/Calendar/Calendar';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPay } from '../../redux/payReducer';
+import { isUsedFalse } from '../../redux/parkingReducer';
 
 const MainPage = () => {
   const [index, setIndex] = useState(0);
@@ -34,6 +36,7 @@ const MainPage = () => {
   const user = useSelector(state => state.user.currentUser)
   const isAuth = useSelector(state => state.user.isAuth);
   const userParking = useSelector(state => state.parking);
+  const isUsed = useSelector(state => state.parking.isUsed);
 
   const visibleModal = (id, text, type) => {
     setModal(true);
@@ -50,7 +53,7 @@ const MainPage = () => {
     setIdCard(id);
   }
 
-  const visibleModalPayBron = (id, type, {dateArrival, dateDeparture, dateNoFormatArrival, dateNoFormatDeparture, timeArrival, timeDeparture, nameParking, parkingFloor}) => {
+  const visibleModalPayBron = (id, type, {dateArrival, dateDeparture, dateNoFormatArrival, dateNoFormatDeparture, timeArrival, timeDeparture, nameParking, parkingFloor, costParking}) => {
     console.log(id);
     console.log(userParking);
     setModal(true);
@@ -64,7 +67,7 @@ const MainPage = () => {
     setTimeDeparture(timeDeparture);
     setParkingName(nameParking);
     setParkingFloor(parkingFloor);
-    setCostBookingParking('1455');
+    setCostBookingParking(costParking);
   }
 
   const resetStateNumberAuto = () => {
@@ -84,13 +87,13 @@ const MainPage = () => {
     dispatch(getAuthParking(user.id));
     dispatch(getParkingReservations(user.id));
     setIsLoading(false);
-  }, []);
+  }, [isUsed]);
   
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
 
-  const bookingPayment = (userId, ParkingId, timeArrival, timeDeparture, numberAuto, theCostOfParking) => {
+  const bookingPayment = async(userId, ParkingId, timeArrival, timeDeparture, numberAuto, theCostOfParking) => {
     if(userId && ParkingId && timeArrival && timeDeparture && numberAuto && theCostOfParking) {
       const dateArrival = new Date(noDateFormatesArrival).toDateString();
       const dateDeparture = new Date(noDateFormatedDeparture).toDateString();
@@ -104,9 +107,19 @@ const MainPage = () => {
         numberAuto,
         theCostOfParking
       }}));
+      await dispatch(createPay());
       navigate('/pay');
     } else {
       setError(true);
+    }
+  }
+
+  const cancelParkingReservations = (idParking) => {
+    console.log(idParking);
+    if(idParking) {
+      dispatch(cancel_Reservations(idParking));
+      window.location.reload();
+      setModal(false);
     }
   }
 
@@ -156,9 +169,9 @@ const MainPage = () => {
           <Modal visible={modal} setVisible={setModal}>
             <h1>Отмена брони</h1>
             <p>Вы действительно хотите отменить бронь парковки</p>
-            <p>В случае отмены брони, деньги вам не будут возвращены</p>
+            <p>В случае отмены брони, если вы хотите вернуть денежные средства, вам необходимо придти в парковочный центр, с паспортом, водительскими правами и с копией чека об оплате услуг.</p>
             <div className={styles.wrapBtn}>
-              <button className={styles.button}>Да</button>
+              <button className={styles.button} onClick={() => cancelParkingReservations(idCard)}>Да</button>
               <button className={styles.button} onClick={() => setModal(false)}>Нет</button>
             </div>
           </Modal>
@@ -175,7 +188,7 @@ const MainPage = () => {
                   <div>
                     <span className={styles.mestoParkingInfo__calendar} style={{fontWeight: 500}}>{dateArrival}</span>
                   </div>
-                  <div>
+                  <div className={styles.bodyTime}>
                     <span className={styles.mestoParkingInfo__clock} style={{fontWeight: 500}}>{timeArrival}</span>
                   </div>
                 </div>
@@ -186,7 +199,7 @@ const MainPage = () => {
                   <div>
                     <span className={styles.mestoParkingInfo__calendar} style={{fontWeight: 500}}>{dateDeparture}</span>
                   </div>
-                  <div>
+                  <div className={styles.bodyTime}>
                     <span className={styles.mestoParkingInfo__clock} style={{fontWeight: 500}}>{timeDeparture}</span>
                   </div>
                 </div>
@@ -196,7 +209,7 @@ const MainPage = () => {
               <span style={{fontSize: 16}}>Этаж: <span style={{fontWeight: 500}}>{parkingFloor}</span> Место парковки: <span style={{fontWeight: 500}}>{parkingName}</span></span>
             </div>
             <div className={styles.wrap__mestoParkingInfo} style={{display: 'flex', marginTop: 10, marginLeft: 0, justifyContent: 'center'}}>
-              <span>Итого к оплате: <span style={{fontWeight: 500}}>1240 ₽</span></span>
+              <span>Итого к оплате: <span style={{fontWeight: 500}}>{costBookingParking}.00 ₽</span></span>
             </div>
             </div>
               <span style={{fontSize: 20, margin: '10px 0'}}>Введите номер автомобиля</span>

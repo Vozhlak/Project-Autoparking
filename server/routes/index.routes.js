@@ -24,6 +24,11 @@ router.post('/parking/update/:id', parkingController.setIsUsedCurrentParking);
 router.post('/parking/createFloor', parkingController.createParkingFloor);
 router.post('/parking/createParkingReservations', authMiddleware, parkingController.createParkingReservations);
 router.get('/parking/getStoryParking/:id', authMiddleware, parkingController.getStoryParking);
-router.post('/parking/sendEmailCheckPay', authMiddleware, parkingController.senEmailCheckPAy);
+router.delete('/parking/cancelReservations/:idParkingReservations', parkingController.сancellationOfTheReservation);
+router.get('/oplata.qiwi.com/create', parkingController.CreateBillPay);
+router.get('/api.qiwi.com/partner/bill/v1/bills/:billid', parkingController.getStatusPay);
+router.post('/api.qiwi.com/partner/bill/v1/bills/:billId/reject', parkingController.rejectPay);
+router.post('/setDataPayQiwi', parkingController.setDataPayQiwi);
+router.get('/getDataPayQiwi/:billid', parkingController.getDataPayQiwi);
 
 module.exports = router;
